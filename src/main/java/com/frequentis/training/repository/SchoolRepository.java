@@ -17,14 +17,13 @@ public class SchoolRepository {
     private static Map<Course, List<Grade>> grades;
     private static Map<Course, Teacher> courseTeacherMap;
 
-    public SchoolRepository() {
+    static {
         courses = new ArrayList<>();
         enrollments = new HashMap<>();
         attendances = new HashMap<>();
         grades = new HashMap<>();
         courseTeacherMap = new HashMap<>();
     }
-
     public static List<Course> getCourses() {
         return courses;
     }

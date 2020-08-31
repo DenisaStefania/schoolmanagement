@@ -1,23 +1,11 @@
 package com.frequentis.training.operations;
 
 import com.frequentis.training.course.Course;
-import com.frequentis.training.course.Grade;
 import com.frequentis.training.repository.SchoolRepository;
 import com.frequentis.training.people.Student;
-
-import java.util.List;
+import com.frequentis.training.response.Response;
 
 public class StudentOperations {
-    private static int getGrade(Student student, Course course) {
-        List<Grade> grades = SchoolRepository.getGrades().get(course);
-        for (Grade g : grades) {
-            if (g.getStudentName().equals(student.getName())) {
-                return g.getGradePoints();
-            }
-        }
-        return -1; // no special value, this method will be called only if the student has been assigned a grade for the course
-    }
-
     public static void enroll(Student student, Course course) {
         boolean isEnrolled = StudentChecking.checkEnrollmentStatus(student, course);
         if (isEnrolled) {
@@ -44,13 +32,12 @@ public class StudentOperations {
         }
     }
 
-
     public static void checkGrade(Student student, Course course) {
         boolean hasEnrolled = StudentChecking.checkEnrollmentStatus(student, course);
-        boolean hasBeenGraded = StudentChecking.checkIfGraded(student, course);
+        Response hasBeenGraded = StudentChecking.checkIfGraded(student, course);
         if (hasEnrolled) {
-            if (hasBeenGraded) {
-                System.out.println("Your grade for " + course.getName() + " is " + getGrade(student, course));
+            if (hasBeenGraded.isSuccess()) {
+                System.out.println("Your grade for " + course.getName() + " is " + hasBeenGraded.getResult());
             } else {
                 System.out.println("You do not have a grade for " + course.getName() + "yet");
             }

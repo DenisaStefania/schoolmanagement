@@ -4,6 +4,7 @@ import com.frequentis.training.course.Course;
 import com.frequentis.training.course.Grade;
 import com.frequentis.training.people.Student;
 import com.frequentis.training.repository.SchoolRepository;
+import com.frequentis.training.response.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,14 +42,14 @@ public class StudentChecking {
         }
     }
 
-    public static boolean checkIfGraded(Student student, Course course) {
+    public static Response checkIfGraded(Student student, Course course) {
         String studentName = student.getName();
         List<Grade> grades = SchoolRepository.getGrades().get(course);
         for (Grade grade : grades) {
             if (grade.getStudentName().equals(studentName)) {
-                return true;
+               return new Response(true, grade.getGradePoints());
             }
         }
-        return false;
+        return new Response(false, 0);
     }
 }
